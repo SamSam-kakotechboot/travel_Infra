@@ -1,0 +1,42 @@
+---
+- hosts: frontend
+  tasks:
+    - name: Stop Docker service
+      become: yes
+      systemd:
+        name: docker
+        state: stopped
+
+    - name: Disable Docker service
+      become: yes
+      systemd:
+        name: docker
+        enabled: no
+
+    - name: Uninstall Docker.io package
+      become: yes
+      apt:
+        name: docker.io
+        state: absent
+        purge: yes
+
+    - name: Remove Docker configuration directories
+      become: yes
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /etc/docker
+        - /var/lib/docker
+        - /var/run/docker.sock
+
+    - name: Remove Docker list file
+      become: yes
+      file:
+        path: /etc/apt/sources.list.d/docker.list
+        state: absent
+
+    - name: Update apt package index after removal
+      become: yes
+      apt:
+        update_cache: yes
