@@ -1,27 +1,46 @@
 region = "ap-northeast-2"
 
+
+# VPC
 vpc_cidr = "192.168.0.0/22"
 vpc_name = "ktb-samsam-vpc"
 
+
+# Internet Gateway
 igw_name = "ktb-samsam-igw"
 
+
+# Subnet
 public_subnet = {
   cidr = "192.168.1.0/24"
   az   = "ap-northeast-2a"
-  name = "ktb-samsam-public-subnet"
+  name = "ktb-samsam-fe-subnet"
 }
 
 private_subnet = {
     cidr = "192.168.2.0/24"
     az   = "ap-northeast-2a"
-    name = "ktb-samsam-private-subnet"
+    name = "ktb-samsam-be-subnet"
 }
 
+private_subnet_db = {
+    cidr = "192.168.3.0/24"
+    az   = "ap-northeast-2c"
+    name = "ktb-samsam-db-subnet"
+}
+
+
+# Nat Gateway
 nat_name = "ktb-samsam-nat"
 
+
+
+# Route Table
 public_route_table_name  = "ktb-samsam-public-rt"
 private_route_table_name = "ktb-samsam-private-rt"
 
+
+# Security Group
 sg_name = "ktb-samsam-sg"
 
 ingress = [
@@ -52,6 +71,9 @@ egress = {
   cidr_blocks = ["0.0.0.0/0"]
 }
 
+
+
+# Instance
 ami                    = "ami-062cf18d655c0b1e8"
 instance_type          = "t2.micro"
 key_name               = "aws-ktb-key"

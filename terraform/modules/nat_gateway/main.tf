@@ -1,4 +1,4 @@
-resource "aws_eip" "ktb-samsam-eip" {
+resource "aws_eip" "modules-eip" {
   domain = "vpc"
 
   tags = {
@@ -6,8 +6,8 @@ resource "aws_eip" "ktb-samsam-eip" {
   }
 }
 
-resource "aws_nat_gateway" "ktb-samsam-nat" {
-  allocation_id = aws_eip.ktb-samsam-eip.id
+resource "aws_nat_gateway" "modules-nat" {
+  allocation_id = aws_eip.modules-eip.id
   subnet_id     = var.subnet_id
 
   tags = {

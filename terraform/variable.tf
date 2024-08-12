@@ -45,6 +45,15 @@ variable "private_subnet" {
   })
 }
 
+variable "private_subnet_db" {
+  description = "프라이빗 DB 서브넷 설정"
+  type = object({
+    cidr = string
+    az   = string
+    name = string
+  })
+}
+
 
 
 # Nat Gateway
@@ -126,33 +135,5 @@ variable "public_instance_name" {
 
 variable "private_instance_name" {
   description = "프라이빗 인스턴스 이름"
-  type        = string
-}
-
-
-
-# RDS
-variable "db_name" {
-  description = "디비 이름"
-  type        = string
-}
-
-variable "master_username" {
-  description = "유저 이름"
-  type        = string
-}
-
-variable "master_password" {
-  description = "유저 비밀 번호"
-  type        = string
-}
-
-variable "db_instance_type" {
-  description = "디비 인스턴스 타입"
-  type        = string
-}
-
-variable "db_engine_version" {
-  description = "퍼블릭 인스턴스 이름"
   type        = string
 }

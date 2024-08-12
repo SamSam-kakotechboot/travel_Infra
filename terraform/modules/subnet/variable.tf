@@ -20,3 +20,12 @@ variable "private_subnet" {
     name = string
   })
 }
+
+variable "private_subnet_db" {
+  description = "프라이빗 db 서브넷 설정"
+  type = object({
+    cidr = string
+    az   = string
+    name = string
+  })
+}

@@ -19,6 +19,7 @@ module "subnet" {
   vpc_id          = module.vpc.vpc_id
   public_subnet   = var.public_subnet
   private_subnet = var.private_subnet
+  private_subnet_db = var.private_subnet_db
 }
 
 module "nat_gateway" {

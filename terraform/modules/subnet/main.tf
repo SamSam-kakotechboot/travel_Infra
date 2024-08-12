@@ -19,3 +19,14 @@ resource "aws_subnet" "modules_private_subnet" {
     Name = var.private_subnet.name
   }
 }
+
+resource "aws_subnet" "modules_private_subnet_db" {
+  vpc_id                  = var.vpc_id
+  cidr_block              = var.private_subnet_db.cidr
+  availability_zone       = var.private_subnet_db.az
+  map_public_ip_on_launch = false
+
+  tags = {
+    Name = var.private_subnet_db.name
+  }
+}
