@@ -56,6 +56,6 @@ module "instance" {
   security_group_id      = module.security_group.security_group_id
   instance_public_count  = var.instance_public_count
   instance_private_count = var.instance_private_count
-  private_name           = var.public_instance_name
-  public_name            = var.private_instance_name
+  public_name            = var.public_instance_name
+  private_name           = var.private_instance_name
 }

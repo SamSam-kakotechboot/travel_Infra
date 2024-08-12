@@ -119,6 +119,16 @@ variable "instance_private_count" {
   type        = number
 }
 
+variable "public_instance_name" {
+  description = "퍼블릭 인스턴스 이름"
+  type        = string
+}
+
+variable "private_instance_name" {
+  description = "프라이빗 인스턴스 이름"
+  type        = string
+}
+
 
 
 # RDS
