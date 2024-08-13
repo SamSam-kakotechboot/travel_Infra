@@ -1,8 +1,17 @@
----
 - import_tasks: ../common/tasks.yml
 
 - name: Install Java
   apt:
-    name: "{{ item }}"
+    name: openjdk-17-jdk
     state: present
-  loop: "{{ packages }}"
+
+- name: Install MariaDB packages
+  apt:
+    name: "{{ mariadb_packages }}"
+    state: present
+
+- name: Start and enable MariaDB service
+  systemd:
+    name: "{{ mariadb_service_name }}"
+    state: started
+    enabled: yes

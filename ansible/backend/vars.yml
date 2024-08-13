@@ -1,2 +1,5 @@
-packages:
-  - openjdk-17-jdk
+mariadb_packages:
+  - mariadb-server
+  - mariadb-client
+
+mariadb_service_name: mariadb
