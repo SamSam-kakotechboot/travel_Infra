@@ -105,6 +105,6 @@ module "db_instance" {
   skip_final_snapshot    = true
   publicly_accessible    = false
   db_subnet_group_name   = module.db_subnet_group.db_subnet_group_name
-  vpc_security_group_ids = [module.security_group.security_group_id]
+  vpc_security_group_ids = [module.db_security_group.security_group_id]
   db_instance_name       = var.db_instance_name
 }
