@@ -83,3 +83,35 @@ instance_private_count = 1
 
 public_instance_name = "ktb-samsam-FE"
 private_instance_name = "ktb-samsam-BE"
+
+
+# RDS
+db_security_group_name = "allow_mariadb"
+db_security_group_description = "Allow inbound traffic for MariaDB"
+db_security_group_ingress_from_port = 3306
+db_security_group_ingress_to_port =  3306
+db_security_group_ingress_protocol = "tcp"
+
+db_security_group_egress = [
+  {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+]
+
+db_subnet_group_name = "ktb-samsam-subnet-group"
+
+
+
+db_allocated_storage = 20
+db_max_allocated_storage = 50
+db_engine = "mariadb"
+db_engine_version = "10.6"
+db_instance_class = "db.t3.micro"
+db_name = "ktb_samsam_27"
+db_username = "ktb_samsam_27"
+db_password = "ktb_samsam_27"
+db_parameter_group_name = "default.mariadb10.6"
+db_instance_name = "ktb-samsam-rds-mariadb"

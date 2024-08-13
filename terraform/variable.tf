@@ -137,3 +137,101 @@ variable "private_instance_name" {
   description = "프라이빗 인스턴스 이름"
   type        = string
 }
+
+
+
+# RDS(Security Group)
+variable "db_security_group_name" {
+  description = "The name of the security group for the DB"
+  type        = string
+}
+variable "db_security_group_description" {
+  description = "The name of the security group for the DB"
+  type        = string
+}
+
+variable "db_security_group_ingress_from_port" {
+  description = "인그레스 규칙"
+  type = number
+}
+
+variable "db_security_group_ingress_to_port" {
+  description = "인그레스 규칙"
+  type = number
+}
+
+variable "db_security_group_ingress_protocol" {
+  description = "인그레스 규칙"
+  type = string
+}
+
+variable "db_security_group_egress" {
+  description = "이그레스 규칙"
+  type = list(object({
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+}
+
+
+
+# RDS(Subnet Group)
+variable "db_subnet_group_name" {
+  description = "The name of the DB subnet group"
+  type        = string
+}
+
+
+
+# RDS(Instance)
+variable "db_allocated_storage" {
+  description = "The allocated storage for the DB instance"
+  type        = number
+}
+
+variable "db_max_allocated_storage" {
+  description = "The maximum allocated storage for the DB instance"
+  type        = number
+}
+
+variable "db_engine" {
+  description = "The database engine"
+  type        = string
+}
+
+variable "db_engine_version" {
+  description = "The version of the database engine"
+  type        = string
+}
+
+variable "db_instance_class" {
+  description = "The instance class for the DB instance"
+  type        = string
+}
+
+variable "db_name" {
+  description = "The username for the DB instance"
+  type        = string
+}
+
+variable "db_username" {
+  description = "The username for the DB instance"
+  type        = string
+}
+
+variable "db_password" {
+  description = "The password for the DB instance"
+  type        = string
+}
+
+variable "db_parameter_group_name" {
+  description = "The DB parameter group name"
+  type        = string
+}
+
+variable "db_instance_name" {
+  description = "The name of the DB instance"
+  type        = string
+}
