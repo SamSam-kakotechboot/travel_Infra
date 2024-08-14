@@ -7,18 +7,22 @@
   apt:
     upgrade: dist
 
-- name: Install Docker.io package
-  become: yes
+- name: Ensure snapd is installed
   apt:
-    name: docker.io
+    name: snapd
     state: present
+    update_cache: yes
 
-- name: Start and enable Docker service
-  become: yes
+- name: Ensure snapd service is enabled and started
   systemd:
-    name: docker
+    name: snapd
     enabled: yes
     state: started
+
+- name: Install Docker using snap
+  snap:
+    name: docker
+    state: present
 
 - name: Check Docker version
   become: yes
