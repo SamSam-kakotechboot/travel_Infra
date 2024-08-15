@@ -46,6 +46,15 @@ module "security_group" {
   ingress_fe = var.ingress_fe
   name_be   = var.sg_name_be
   ingress_be = var.ingress_be
+  name_db            = var.sg_name_db
+  ingress_db = [
+    {
+      from_port   = var.ingress_db_from_port
+      to_port     = var.ingress_db_to_port
+      protocol    = var.ingress_db_protocol
+      cidr_blocks = [var.private_subnet.cidr]
+    }
+  ]
   egress  = var.egress
 }
 
@@ -66,25 +75,8 @@ module "instance" {
 
 
 # RDS
-module "db_security_group" {
-  source = "./rds/security_group"
-
-  name            = var.db_security_group_name
-  description     = var.db_security_group_description
-  vpc_id          = module.vpc.vpc_id
-  ingress = [
-    {
-      from_port   = var.db_security_group_ingress_from_port
-      to_port     = var.db_security_group_ingress_to_port
-      protocol    = var.db_security_group_ingress_protocol
-      cidr_blocks = [var.private_subnet.cidr]
-    }
-  ]
-  egress = var.db_security_group_egress
-}
-
 module "db_subnet_group" {
-  source = "./rds/subnet_group"
+  source = "./modules/subnet_group"
 
   db_subnet_group_name = var.db_subnet_group_name
   private_subnet_ids   = [
@@ -94,7 +86,7 @@ module "db_subnet_group" {
 }
 
 module "db_instance" {
-  source = "./rds/instance"
+  source = "./modules/db_instance"
 
   allocated_storage      = var.db_allocated_storage
   max_allocated_storage  = var.db_max_allocated_storage
@@ -108,6 +100,6 @@ module "db_instance" {
   skip_final_snapshot    = true
   publicly_accessible    = false
   db_subnet_group_name   = module.db_subnet_group.db_subnet_group_name
-  vpc_security_group_ids = [module.db_security_group.security_group_id]
+  vpc_security_group_ids = [module.security_group.security_group_id]
   db_instance_name       = var.db_instance_name
 }

@@ -79,8 +79,14 @@ variable "sg_name_fe" {
   description = "프론트 보안 그룹 이름"
   type        = string
 }
+
 variable "sg_name_be" {
   description = "백 보안 그룹 이름"
+  type        = string
+}
+
+variable "sg_name_db" {
+  description = "디비 보안 그룹 이름"
   type        = string
 }
 
@@ -102,6 +108,21 @@ variable "ingress_be" {
     protocol    = string
     cidr_blocks = list(string)
   }))
+}
+
+variable "ingress_db_from_port" {
+  description = "인그레스 규칙 - 포트"
+  type = number
+}
+
+variable "ingress_db_to_port" {
+  description = "인그레스 규칙 - 포트"
+  type = number
+}
+
+variable "ingress_db_protocol" {
+  description = "인그레스 규칙"
+  type = string
 }
 
 variable "egress" {
@@ -152,43 +173,6 @@ variable "public_instance_name" {
 variable "private_instance_name" {
   description = "프라이빗 인스턴스 이름"
   type        = string
-}
-
-
-
-# RDS(Security Group)
-variable "db_security_group_name" {
-  description = "The name of the security group for the DB"
-  type        = string
-}
-variable "db_security_group_description" {
-  description = "The name of the security group for the DB"
-  type        = string
-}
-
-variable "db_security_group_ingress_from_port" {
-  description = "인그레스 규칙"
-  type = number
-}
-
-variable "db_security_group_ingress_to_port" {
-  description = "인그레스 규칙"
-  type = number
-}
-
-variable "db_security_group_ingress_protocol" {
-  description = "인그레스 규칙"
-  type = string
-}
-
-variable "db_security_group_egress" {
-  description = "이그레스 규칙"
-  type = list(object({
-    from_port   = number
-    to_port     = number
-    protocol    = string
-    cidr_blocks = list(string)
-  }))
 }
 
 

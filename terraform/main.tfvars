@@ -43,6 +43,7 @@ private_route_table_name = "ktb-samsam-private-rt"
 # Security Group
 sg_name_fe = "ktb-samsam-sg_fe"
 sg_name_be = "ktb-samsam-sg_be"
+sg_name_db = "ktb-samsam-sg-db"
 
 ingress_fe = [
   {
@@ -92,6 +93,10 @@ ingress_be = [
   },
 ]
 
+ingress_db_from_port = 3306
+ingress_db_to_port =  3306
+ingress_db_protocol = "tcp"
+
 egress = {
   from_port   = 0
   to_port     = 0
@@ -114,21 +119,6 @@ private_instance_name = "ktb-samsam-BE"
 
 
 # RDS
-db_security_group_name = "allow_mariadb"
-db_security_group_description = "Allow inbound traffic for MariaDB"
-db_security_group_ingress_from_port = 3306
-db_security_group_ingress_to_port =  3306
-db_security_group_ingress_protocol = "tcp"
-
-db_security_group_egress = [
-  {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-]
-
 db_subnet_group_name = "ktb-samsam-subnet-group"
 
 

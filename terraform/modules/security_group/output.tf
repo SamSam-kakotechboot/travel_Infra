@@ -7,3 +7,8 @@ output "security_group_id-be" {
   description = "백 보안 그룹의 ID"
   value       = aws_security_group.ktb-samsam-sg-BE.id
 }
+
+output "security_group_id" {
+  description = "보안 그룹 ID"
+  value       = aws_security_group.db_sg.id
+}

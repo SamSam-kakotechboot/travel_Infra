@@ -33,6 +33,22 @@ variable "ingress_be" {
   }))
 }
 
+variable "name_db" {
+  description = "디비 보안 그룹 이름"
+  type        = string
+}
+
+
+variable "ingress_db" {
+  description = "인그레스 규칙"
+  type = list(object({
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+}
+
 variable "egress" {
   description = "이그레스 규칙"
   type = object({
