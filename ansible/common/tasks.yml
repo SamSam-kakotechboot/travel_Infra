@@ -25,7 +25,6 @@
     state: present
 
 - name: Check Docker version
-  become: yes
   command: docker --version
   register: docker_version
 
@@ -55,3 +54,11 @@
 
 - name: Start and enable Jenkins service
   shell: systemctl start jenkins && systemctl enable jenkins
+
+- name: Get Jenkins initial admin password
+  command: cat /var/lib/jenkins/secrets/initialAdminPassword
+  register: jenkins_admin_password
+
+- name: Display Jenkins initial admin password
+  debug:
+    msg: "Jenkins initial admin password: {{ jenkins_admin_password.stdout }}"
