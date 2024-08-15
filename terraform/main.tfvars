@@ -104,7 +104,7 @@ egress = {
 # Instance
 ami                    = "ami-062cf18d655c0b1e8"
 #instance_type          = "t2.medium"
-key_name               = "aws-ktb-key"
+key_name               = "ktb-samsam-key"
 
 instance_public_count  = 1
 instance_private_count = 1

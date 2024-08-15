@@ -131,7 +131,7 @@ variable "instance_type" {
 variable "key_name" {
   description = "SSH 키 이름"
   type        = string
-  default     = "ktb-samsam-key"
+  default     = "aws-ktb-key"
 }
 
 variable "instance_public_count" {
