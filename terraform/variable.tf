@@ -75,13 +75,27 @@ variable "private_route_table_name" {
 
 
 # Security Group
-variable "sg_name" {
-  description = "보안 그룹 이름"
+variable "sg_name_fe" {
+  description = "프론트 보안 그룹 이름"
+  type        = string
+}
+variable "sg_name_be" {
+  description = "백 보안 그룹 이름"
   type        = string
 }
 
-variable "ingress" {
-  description = "인그레스 규칙"
+variable "ingress_fe" {
+  description = "프론트 인그레스 규칙"
+  type = list(object({
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+}
+
+variable "ingress_be" {
+  description = "백 인그레스 규칙"
   type = list(object({
     from_port   = number
     to_port     = number
@@ -111,11 +125,13 @@ variable "ami" {
 variable "instance_type" {
   description = "인스턴스 유형"
   type        = string
+  default     = "t2.micro"
 }
 
 variable "key_name" {
   description = "SSH 키 이름"
   type        = string
+  default     = "aws-ktb-key"
 }
 
 variable "instance_public_count" {
@@ -209,6 +225,7 @@ variable "db_engine_version" {
 variable "db_instance_class" {
   description = "The instance class for the DB instance"
   type        = string
+  default     = "db.t3.micro"
 }
 
 variable "db_name" {

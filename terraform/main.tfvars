@@ -41,9 +41,10 @@ private_route_table_name = "ktb-samsam-private-rt"
 
 
 # Security Group
-sg_name = "ktb-samsam-sg"
+sg_name_fe = "ktb-samsam-sg_fe"
+sg_name_be = "ktb-samsam-sg_be"
 
-ingress = [
+ingress_fe = [
   {
     from_port   = 22
     to_port     = 22
@@ -64,6 +65,21 @@ ingress = [
   }
 ]
 
+ingress_be = [
+  {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  },
+  {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+]
+
 egress = {
   from_port   = 0
   to_port     = 0
@@ -75,8 +91,8 @@ egress = {
 
 # Instance
 ami                    = "ami-062cf18d655c0b1e8"
-instance_type          = "t2.micro"
-key_name               = "aws-ktb-key"
+instance_type          = "t2.medium"
+key_name               = "ktb-samsam-key"
 
 instance_public_count  = 1
 instance_private_count = 1
@@ -109,7 +125,7 @@ db_allocated_storage = 20
 db_max_allocated_storage = 50
 db_engine = "mariadb"
 db_engine_version = "10.6"
-db_instance_class = "db.t3.micro"
+db_instance_class = "db.t3.medium"
 db_name = "ktb_samsam_27"
 db_username = "ktb_samsam_27"
 db_password = "ktb_samsam_27"

@@ -5,7 +5,7 @@ resource "aws_instance" "ktb-samsam-public-instance" {
   key_name               = var.key_name
   subnet_id              = var.public_subnet_id
   associate_public_ip_address = true
-  vpc_security_group_ids = [var.security_group_id]
+  vpc_security_group_ids = [var.security_group_id_fe]
 
   tags = {
     Name = var.public_name
@@ -18,7 +18,7 @@ resource "aws_instance" "ktb-samsam-private-instance" {
   instance_type          = var.instance_type
   key_name               = var.key_name
   subnet_id              = var.private_subnet_id
-  vpc_security_group_ids = [var.security_group_id]
+  vpc_security_group_ids = [var.security_group_id_be]
 
   tags = {
     Name = var.private_name

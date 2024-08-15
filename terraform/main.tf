@@ -42,8 +42,10 @@ module "route_table" {
 module "security_group" {
   source = "./modules/security_group"
   vpc_id = module.vpc.vpc_id
-  name   = var.sg_name
-  ingress = var.ingress
+  name_fe   = var.sg_name_fe
+  ingress_fe = var.ingress_fe
+  name_be   = var.sg_name_be
+  ingress_be = var.ingress_be
   egress  = var.egress
 }
 
@@ -54,7 +56,8 @@ module "instance" {
   key_name               = var.key_name
   public_subnet_id       = module.subnet.public_subnet_id
   private_subnet_id     = module.subnet.private_subnet_id
-  security_group_id      = module.security_group.security_group_id
+  security_group_id_fe      = module.security_group.security_group_id-fe
+  security_group_id_be      = module.security_group.security_group_id-be
   instance_public_count  = var.instance_public_count
   instance_private_count = var.instance_private_count
   public_name            = var.public_instance_name
