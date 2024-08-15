@@ -1,10 +1,5 @@
 - import_tasks: ../common/tasks.yml
 
-- name: Install Java
-  apt:
-    name: openjdk-17-jdk
-    state: present
-
 - name: Install MariaDB packages
   apt:
     name: "{{ mariadb_packages }}"
