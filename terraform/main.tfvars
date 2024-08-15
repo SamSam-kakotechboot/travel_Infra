@@ -91,8 +91,8 @@ egress = {
 
 # Instance
 ami                    = "ami-062cf18d655c0b1e8"
-instance_type          = "t2.medium"
-key_name               = "ktb-samsam-key"
+#instance_type          = "t2.medium"
+key_name               = "aws-ktb-key"
 
 instance_public_count  = 1
 instance_private_count = 1
@@ -125,7 +125,7 @@ db_allocated_storage = 20
 db_max_allocated_storage = 50
 db_engine = "mariadb"
 db_engine_version = "10.6"
-db_instance_class = "db.t3.medium"
+#db_instance_class = "db.t3.medium"
 db_name = "ktb_samsam_27"
 db_username = "ktb_samsam_27"
 db_password = "ktb_samsam_27"
