@@ -1,0 +1,40 @@
+{
+  "ktb-samsam-private-instance": {
+    "sensitive": false,
+    "type": [
+      "object",
+      {
+        "ip": [
+          "tuple",
+          [
+            "string"
+          ]
+        ]
+      }
+    ],
+    "value": {
+      "ip": [
+        "192.168.2.159"
+      ]
+    }
+  },
+  "ktb-samsam-public-instance": {
+    "sensitive": false,
+    "type": [
+      "object",
+      {
+        "ip": [
+          "tuple",
+          [
+            "string"
+          ]
+        ]
+      }
+    ],
+    "value": {
+      "ip": [
+        "3.38.101.139"
+      ]
+    }
+  }
+}

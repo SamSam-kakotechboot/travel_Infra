@@ -1,6 +1,6 @@
 provider "aws" {
   region = var.region
-#  profile = "ktb-samsam"
+  profile = "ktb-samsam"
 }
 
 module "vpc" {
