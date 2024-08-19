@@ -12,3 +12,12 @@
 - chore: 빌드 업무 수정, 패키지 매니저 수정
 - rename: 파일 혹은 폴더 명 변경만 진행된 경우
 - remove: 파일 혹은 폴더 삭제 작업만 진행된 경우
+
+
+### 테라폼 쉘 스크립트 사용법
+***
+해당 쉘 스크립트는 테라폼 생성 후 ansible - hosts.ini에 ip를 자동으로 할당하기 위해 만들어 졌습니다.
+
+- brew install jq
+- chmod +x terraform_apply.sh
+- ./terraform_apply.sh
