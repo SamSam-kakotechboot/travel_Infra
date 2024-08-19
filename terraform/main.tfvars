@@ -108,7 +108,7 @@ egress = {
 
 # Instance
 ami                    = "ami-062cf18d655c0b1e8"
-#instance_type          = "t2.medium"
+instance_type          = "t2.medium"
 key_name               = "ktb-samsam-key"
 
 instance_public_count  = 1
@@ -133,3 +133,10 @@ db_username = "ktb_samsam_27"
 db_password = "ktb_samsam_27"
 db_parameter_group_name = "default.mariadb10.6"
 db_instance_name = "ktb-samsam-rds-mariadb"
+
+# ECR
+ecr_fe_name = "ktb-samsam-fe-ecr"
+ecr_be_name = "ktb-samsam-be-ecr"
+ecr_fe_tag = "MUTABLE"  # 태그 변경 가능 여부 (MUTABLE 또는 IMMUTABLE)
+ecr_be_tag = "MUTABLE"  # 태그 변경 가능 여부 (MUTABLE 또는 IMMUTABLE)
+ecr_scan = true

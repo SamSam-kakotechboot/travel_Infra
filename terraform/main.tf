@@ -1,5 +1,6 @@
 provider "aws" {
   region = var.region
+#  profile = "ktb-samsam"
 }
 
 module "vpc" {
@@ -102,4 +103,14 @@ module "db_instance" {
   db_subnet_group_name   = module.db_subnet_group.db_subnet_group_name
   vpc_security_group_ids = [module.security_group.security_group_id]
   db_instance_name       = var.db_instance_name
+}
+
+module "ecr" {
+  source = "./modules/ecr"
+
+  ecr_be_name = var.ecr_be_name
+  ecr_be_tag  = var.ecr_be_tag
+  ecr_fe_name = var.ecr_fe_name
+  ecr_fe_tag  = var.ecr_fe_tag
+  ecr_scan    = var.ecr_scan
 }
