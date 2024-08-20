@@ -6,3 +6,8 @@
     name: "{{ item }}"
     state: present
   loop: "{{ packages }}"
+
+- name: Create or update active_color.txt file
+  shell: echo "blue" > /var/lib/jenkins/active_color.txt
+  args:
+    creates: /var/lib/jenkins/active_color.txt
