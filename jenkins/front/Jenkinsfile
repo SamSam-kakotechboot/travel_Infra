@@ -3,9 +3,10 @@ pipeline {
 
     environment {
         REPO = 'SamSam-kakotechboot/travel_FE'
-        ECR_REPO = '381491842895.dkr.ecr.ap-northeast-2.amazonaws.com/travel_fe'
+        ECR_REPO = '381491842895.dkr.ecr.ap-northeast-2.amazonaws.com/ktb-samsam-fe-ecr'
         ECR_CREDENTIALS_ID = 'ecr:ap-northeast-2:ecr_credentials_id'
         UNIQUE_TAG = "${env.BUILD_NUMBER}"
+        IMAGE_NAME = "ktb-samsam-travel"
     }
 
     stages {
@@ -30,6 +31,21 @@ pipeline {
                         dockerImage.push("${UNIQUE_TAG}")
                         dockerImage.push('latest')
                     }
+                }
+            }
+        }
+
+        stage('Deploy to Server') {
+            steps {
+                script {
+                    sh """
+                    docker stop ${IMAGE_NAME} || true
+                    docker rm ${IMAGE_NAME} || true
+                    """
+
+                    sh """
+                    docker run -d --name ${IMAGE_NAME} -p 80:80 ${ECR_REPO}:${UNIQUE_TAG}
+                    """
                 }
             }
         }
