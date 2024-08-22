@@ -1,8 +1,77 @@
 ---
 - import_tasks: ../common/tasks.yml
 
-- name: Install node and npm
+#- name: Install node and npm
+#  apt:
+#    name: "{{ item }}"
+#    state: present
+#  loop: "{{ packages }}"
+
+- name: Install Nginx
   apt:
-    name: "{{ item }}"
+    name: nginx
     state: present
-  loop: "{{ packages }}"
+
+- name: Start Nginx service
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: Remove the default Nginx configuration file
+  file:
+    path: /etc/nginx/sites-available/default
+    state: absent
+
+- name: Remove the default Nginx configuration file
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: Copy blue.conf
+  copy:
+    src: nginx/blue.conf
+    dest: /etc/nginx/sites-available/blue.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Copy green.conf
+  copy:
+    src: nginx/green.conf
+    dest: /etc/nginx/sites-available/green.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Ensure the /etc/nginx/samsam directory exists
+  file:
+    path: /etc/nginx/samsam
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create or update active_color.txt file
+  shell: echo "blue" > /etc/nginx/samsam/active_color.txt
+  args:
+    creates: /etc/nginx/samsam/active_color.txt
+
+- name: Copy non-stop.sh
+  copy:
+    src: nginx/non-stop.sh
+    dest: /etc/nginx/samsam/non-stop.sh
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Allow Jenkins user to run specific commands without a password
+  lineinfile:
+    path: /etc/sudoers.d/jenkins
+    state: present
+    create: yes
+    line: "jenkins ALL=(ALL) NOPASSWD: /etc/nginx/samsam/non-stop.sh, /bin/ln, /usr/bin/tee, /usr/sbin/nginx, /bin/systemctl reload nginx"
+
+- name: Validate sudoers file
+  command: visudo -cf /etc/sudoers.d/jenkins
+  ignore_errors: yes

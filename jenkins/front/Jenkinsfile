@@ -1,0 +1,102 @@
+pipeline {
+    agent any
+
+    environment {
+        REPO = 'SamSam-kakotechboot/travel_FE'
+        ECR_REPO = '381491842895.dkr.ecr.ap-northeast-2.amazonaws.com/ktb-samsam-fe-ecr'
+        ECR_CREDENTIALS_ID = 'ecr:ap-northeast-2:ecr_credentials_id'
+        UNIQUE_TAG = "${env.BUILD_NUMBER}"
+        IMAGE_NAME = "ktb-samsam-travel"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'feature/docker', url: "https://github.com/${REPO}.git"
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    dockerImage = docker.build("${ECR_REPO}:${UNIQUE_TAG}", "--no-cache .")
+                }
+            }
+        }
+
+        stage('Push to ECR') {
+            steps {
+                script {
+                    docker.withRegistry("https://${ECR_REPO}", "$ECR_CREDENTIALS_ID") {
+                        dockerImage.push("${UNIQUE_TAG}")
+                        dockerImage.push('latest')
+                    }
+                }
+            }
+        }
+
+        stage('Determine Active Server') {
+            steps {
+                script {
+                    def activeColor = sh(script: "cat /etc/nginx/samsam/active_color.txt", returnStdout: true).trim()
+                    echo "Active Color: ${activeColor}"
+
+                    env.ACTIVE_COLOR = activeColor
+                    echo "env.ACTIVE_COLOR: ${env.ACTIVE_COLOR}"
+                    env.NEW_COLOR = (env.ACTIVE_COLOR == "blue") ? "green" : "blue"
+                    echo "env.NEW_COLOR : ${env.NEW_COLOR}"
+                }
+            }
+        }
+
+        stage('Deploy to Inactive Server') {
+            steps {
+                script {
+                    def targetPort
+                    def targetContainerName = "${IMAGE_NAME}-${env.NEW_COLOR}"
+
+                    if (env.ACTIVE_COLOR == "blue") {
+                        targetPort = "30002"
+                    } else {
+                        targetPort = "30001"
+                    }
+
+                    sh """
+                    docker stop ${targetContainerName} || true
+                    docker rm ${targetContainerName} || true
+                    docker run -d --name ${targetContainerName} -e ACTIVE_COLOR=${env.NEW_COLOR} -p ${targetPort}:80 ${ECR_REPO}:${UNIQUE_TAG}
+                    """
+                }
+            }
+        }
+
+        stage('Switch Nginx to New Server') {
+            steps {
+                script {
+                    sh "/etc/nginx/samsam/non-stop.sh"
+                }
+            }
+        }
+
+        stage('Stop Previous Server') {
+            steps {
+                script {
+                    def previousContainerName = "${IMAGE_NAME}-${env.ACTIVE_COLOR}"
+
+                    sh """
+                    docker stop ${previousContainerName} || true
+                    docker rm ${previousContainerName} || true
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            script {
+                sh 'docker system prune -a -f'
+            }
+        }
+    }
+}
