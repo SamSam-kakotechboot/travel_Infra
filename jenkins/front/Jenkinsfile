@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+
+    environment {
+        REPO = 'SamSam-kakotechboot/travel_FE'
+        ECR_REPO = '381491842895.dkr.ecr.ap-northeast-2.amazonaws.com/travel_fe'
+        ECR_CREDENTIALS_ID = 'ecr:ap-northeast-2:ecr_credentials_id'
+        UNIQUE_TAG = "${env.BUILD_NUMBER}"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: "https://github.com/${REPO}.git"
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    dockerImage = docker.build("${ECR_REPO}:${UNIQUE_TAG}")
+                }
+            }
+        }
+
+        stage('Push to ECR') {
+            steps {
+                script {
+                    docker.withRegistry("https://${ECR_REPO}", "$ECR_CREDENTIALS_ID") {
+                        dockerImage.push("${UNIQUE_TAG}")
+                        dockerImage.push('latest')
+                    }
+                }
+            }
+        }
+    }
+}
