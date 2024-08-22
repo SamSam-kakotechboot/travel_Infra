@@ -12,14 +12,14 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: "https://github.com/${REPO}.git"
+                git branch: 'feature/docker', url: "https://github.com/${REPO}.git"
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("${ECR_REPO}:${UNIQUE_TAG}")
+                    dockerImage = docker.build("${ECR_REPO}:${UNIQUE_TAG}", "--no-cache .")
                 }
             }
         }
@@ -35,18 +35,67 @@ pipeline {
             }
         }
 
-        stage('Deploy to Server') {
+        stage('Determine Active Server') {
             steps {
                 script {
-                    sh """
-                    docker stop ${IMAGE_NAME} || true
-                    docker rm ${IMAGE_NAME} || true
-                    """
+                    def activeColor = sh(script: "cat /etc/nginx/samsam/active_color.txt", returnStdout: true).trim()
+                    echo "Active Color: ${activeColor}"
+
+                    env.ACTIVE_COLOR = activeColor
+                    echo "env.ACTIVE_COLOR: ${env.ACTIVE_COLOR}"
+                    env.NEW_COLOR = (env.ACTIVE_COLOR == "blue") ? "green" : "blue"
+                    echo "env.NEW_COLOR : ${env.NEW_COLOR}"
+                }
+            }
+        }
+
+        stage('Deploy to Inactive Server') {
+            steps {
+                script {
+                    def targetPort
+                    def targetContainerName = "${IMAGE_NAME}-${env.NEW_COLOR}"
+
+                    if (env.ACTIVE_COLOR == "blue") {
+                        targetPort = "30002"
+                    } else {
+                        targetPort = "30001"
+                    }
 
                     sh """
-                    docker run -d --name ${IMAGE_NAME} -p 80:80 ${ECR_REPO}:${UNIQUE_TAG}
+                    docker stop ${targetContainerName} || true
+                    docker rm ${targetContainerName} || true
+                    docker run -d --name ${targetContainerName} -e ACTIVE_COLOR=${env.NEW_COLOR} -p ${targetPort}:80 ${ECR_REPO}:${UNIQUE_TAG}
                     """
                 }
+            }
+        }
+
+        stage('Switch Nginx to New Server') {
+            steps {
+                script {
+                    sh "/etc/nginx/samsam/non-stop.sh"
+                }
+            }
+        }
+
+        stage('Stop Previous Server') {
+            steps {
+                script {
+                    def previousContainerName = "${IMAGE_NAME}-${env.ACTIVE_COLOR}"
+
+                    sh """
+                    docker stop ${previousContainerName} || true
+                    docker rm ${previousContainerName} || true
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            script {
+                sh 'docker system prune -a -f'
             }
         }
     }
