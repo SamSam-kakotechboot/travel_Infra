@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         REPO = 'SamSam-kakotechboot/travel_FE'
-        ECR_REPO = '381491842895.dkr.ecr.ap-northeast-2.amazonaws.com/ktb-samsam-fe-ecr'
+        ECR_REPO = '160885265705.dkr.ecr.ap-northeast-2.amazonaws.com/ktb-samsam-fe-ecr'
         ECR_CREDENTIALS_ID = 'ecr:ap-northeast-2:ecr_credentials_id'
         UNIQUE_TAG = "${env.BUILD_NUMBER}"
         IMAGE_NAME = "ktb-samsam-travel"
