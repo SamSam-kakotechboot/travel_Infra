@@ -64,7 +64,7 @@ pipeline {
                     sh """
                     docker stop ${targetContainerName} || true
                     docker rm ${targetContainerName} || true
-                    docker run -d --name ${targetContainerName} -e ACTIVE_COLOR=${env.NEW_COLOR} -p ${targetPort}:80 ${ECR_REPO}:${UNIQUE_TAG}
+                    docker run -d --name ${targetContainerName} -e ACTIVE_COLOR=${env.NEW_COLOR} -e VITE_API_BASE_URL=${env.VITE_API_BASE_URL} -p ${targetPort}:80 ${ECR_REPO}:${UNIQUE_TAG}
                     """
                 }
             }
