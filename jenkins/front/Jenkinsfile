@@ -77,9 +77,9 @@ pipeline {
                 script {
                     sh "/etc/nginx/samsam/non-stop.sh"
                     
-                    sh "sudo ln -sf /etc/nginx/sites-available/${env.NEW_COLOR}.conf /etc/nginx/sites-enabled/${env.NEW_COLOR}.conf"
-                    sh "sudo rm -f /etc/nginx/sites-enabled/${env.ACTIVE_COLOR}.conf"
-                    sh "sudo nginx -t && sudo nginx -s reload"
+                    sh "ln -sf /etc/nginx/sites-available/${env.NEW_COLOR}.conf /etc/nginx/sites-enabled/${env.NEW_COLOR}.conf"
+                    sh "rm -f /etc/nginx/sites-enabled/${env.ACTIVE_COLOR}.conf"
+                    sh "nginx -t && sudo nginx -s reload"
                 }
             }
         }
