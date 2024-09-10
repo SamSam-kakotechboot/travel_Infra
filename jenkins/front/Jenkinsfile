@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'feature/docker', url: "https://github.com/${REPO}.git"
+                git branch: 'main', url: "https://github.com/${REPO}.git"
             }
         }
 
